@@ -10,13 +10,10 @@ Henry Underhill
 
 Matthew Coulibaly
 
-### Link to data: 
-
-For the time being: 
-
-But we need to explore a bit more
 
 ## Overview of the dataset
+
+For the time being: 
 
 [Link to dataset here](https://github.com/fivethirtyeight/data/tree/master/fight-songs)
 
