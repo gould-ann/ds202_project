@@ -25,6 +25,17 @@ This linked dataset a a csv of the power 5 conferences and additional universite
 
 ## Plan for Exploratory Analysis
 
+1. Look into data from the Department of Education
+
+2. Look into potential sports statistics/wins and loses 
+
+3. Look into songs for each potential sports conference
+
+4. Time series... Year when written... Potential correlations (win rates...) 
+
+5. Compare fight songs written by students vs not written by students
+
+
 
  
 
