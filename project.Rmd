@@ -9,12 +9,43 @@ authors: todos
 ----
 libraries here 
 ```{r}
+library(readxl)
 
 ```
 
 ----
 import data here
 ```{r}
+fight_songs = read.csv('fight-songs.csv')
+ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
+fight_songs
+ipeds
+```
+
+```{r}
+
+# loop through all values ipeds and fight_songs
+i <- 1
+#for (name_ioeds in ipeds$Name){
+#print(name_ioeds)
+  for (name in fight_songs$school){
+    if (!is.na(pmatch(name, ipeds$Name))){
+      i = i + 1
+      foo <- paste("works: ", name)
+      print(foo)
+    }
+    else{
+      foo <- paste("doesn't work: ", name)
+      print(foo)
+    }
+  }
+  
+# }
+
+
+#  for (name in fight_songs$school){
+  # pmatch(name, ipeds$Name, dup = FALSE)
+ # }
 
 ```
 
