@@ -1,0 +1,52 @@
+---
+title: '*cool project name here*'
+output:
+  html_document:
+    df_print: paged
+authors: todos
+---
+
+----
+libraries here 
+```{r}
+
+```
+
+----
+import data here
+```{r}
+
+```
+
+----
+clean data here
+```{r}
+
+```
+
+----
+jessies part
+```{r}
+
+```
+
+----
+henrys part
+```{r}
+
+```
+
+----
+matthews part
+```{r}
+
+```
+
+----
+anns part (if doing more than cleaning)
+```{r}
+
+```
+
+
+
