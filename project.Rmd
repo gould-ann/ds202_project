@@ -21,39 +21,31 @@ ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
 fight_songs
 ipeds
 ```
-
+----
+cleaning data
 ```{r}
 
 # loop through all values ipeds and fight_songs
+cleaned_ipeds <- data.frame()
 i <- 1
-#for (name_ioeds in ipeds$Name){
-#print(name_ioeds)
   for (name in fight_songs$school){
-    if (!is.na(pmatch(name, ipeds$Name))){
-      i = i + 1
+    if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
+      picked_row <- (pmatch(name, ipeds$Name))
+      
       foo <- paste("works: ", name)
       print(foo)
+      cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
     }
     else{
       foo <- paste("doesn't work: ", name)
       print(foo)
     }
   }
-  
-# }
 
-
-#  for (name in fight_songs$school){
-  # pmatch(name, ipeds$Name, dup = FALSE)
- # }
+# cleaned_ipeds
 
 ```
-
-----
-clean data here
-```{r}
-
-```
+cleaned_ipeds is the cleaned up data frame connecting fight song university names with university information
 
 ----
 jessies part
