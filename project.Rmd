@@ -42,11 +42,11 @@ i <- 1
     }
   }
 
-# cleaned_ipeds
+# cleaned_ipedsa
 
 ```
 cleaned_ipeds is the cleaned up data frame connecting fight song university names with university information
-
+WARNING: Only works with 25 frames in the data. the rest will have to manually be extracted I think
 ----
 jessies part
 ```{r}
