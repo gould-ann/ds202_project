@@ -10,6 +10,8 @@ authors: todos
 libraries here 
 ```{r}
 library(readxl)
+library(classdata)
+library(tidyverse)
 ```
 
 ----
@@ -32,7 +34,8 @@ for (name in fight_songs$school){
   if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
     picked_row <- (pmatch(name, ipeds$Name))
     foo <- paste("works: ", name)
-    # print(foo)
+    foo <- paste(foo, ipeds$Name[picked_row,])
+    print(foo)
    
     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
   }
@@ -48,11 +51,22 @@ for(row in 1:nrow(lookup_table)){
   cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
 }
 
-cleaned_ipeds
+cleaned_ipeds <- cleaned_ipeds[order(cleaned_ipeds$Name),]
+fight_songs <- fight_songs[order(fight_songs$school),]
 
+
+fight_songs
+cleaned_ipeds
 ```
-cleaned_ipeds is the cleaned up data frame connecting fight song university names with university information
-WARNING: Only works with 25 frames in the data. the rest will have to manually be extracted I think
+
+----
+joining the data
+```{r}
+cleaned_ipeds$year <- NULL
+
+join_data <- left_join(cleaned_ipeds, fight_songs)
+```
+
 ----
 jessies part
 ```{r}
