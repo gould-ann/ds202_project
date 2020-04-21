@@ -10,7 +10,6 @@ authors: todos
 libraries here 
 ```{r}
 library(readxl)
-
 ```
 
 ----
@@ -18,16 +17,15 @@ import data here
 ```{r}
 fight_songs = read.csv('fight-songs.csv')
 ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
-# fight_songs
-# ipeds
-
 lookup_table = read.csv('lookup_table.csv')
 ```
 ----
 cleaning data
-```{r}
 
-# loop through all values ipeds and fight_songs
+1) loop through all values ipeds and fight_songs
+
+2) add if similar name, otherwise print which names did not work
+```{r}
 cleaned_ipeds <- data.frame()
 i <- 1
 for (name in fight_songs$school){
@@ -40,21 +38,16 @@ for (name in fight_songs$school){
   }
   else{
     foo <- paste("doesn't work: ", name)
-    print(foo)
-    i <- i + 1
+    # print(foo)
   }
 }
 
-print(i)
-
-i <- 1
 for(row in 1:nrow(lookup_table)){
   location <- lookup_table$Column[row]
   i <- i + 1
   cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
 }
 
-i
 cleaned_ipeds
 
 ```
