@@ -12,6 +12,7 @@ libraries here
 library(readxl)
 library(classdata)
 library(tidyverse)
+library(stringr)
 ```
 
 ----
@@ -22,7 +23,7 @@ ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
 lookup_table = read.csv('lookup_table.csv')
 ```
 ----
-cleaning data
+cleaning data (VERSION 1)
 
 1) loop through all values ipeds and fight_songs
 
@@ -34,7 +35,7 @@ for (name in fight_songs$school){
   if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
     picked_row <- (pmatch(name, ipeds$Name))
     foo <- paste("works: ", name)
-    foo <- paste(foo, ipeds$Name[picked_row,])
+    foo <- paste(foo, ipeds$Name[picked_row])
     print(foo)
    
     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
@@ -51,12 +52,29 @@ for(row in 1:nrow(lookup_table)){
   cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
 }
 
-cleaned_ipeds <- cleaned_ipeds[order(cleaned_ipeds$Name),]
-fight_songs <- fight_songs[order(fight_songs$school),]
+```
+----
+cleaning the data (VERSION 2!)
+added a new column for the IDs in ipeds. allows for better, through cleaning. Some words weren't used correctly in pmatch.
+```{r}
 
+for (id in fight_songs$"ID Number"){
+  if (!is.na(match(name, ipeds$"ID Number"))){
+    picked_row <- (match(name, ipeds$"ID Number"))
+    foo <- paste("works: ", name)
+    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+  }
+  else{
+    print("ERROR")
+  }
+}
+cleaned_ipeds
+fight_songs$ID.number <- as.double(fight_songs$ID.number)
+
+names(fight_songs)[28] <- "ID Number"
 
 fight_songs
-cleaned_ipeds
+
 ```
 
 ----
