@@ -71,7 +71,7 @@ for (id in fight_songs$"ID Number"){
 cleaned_ipeds
 fight_songs$ID.number <- as.double(fight_songs$ID.number)
 
-names(fight_songs)[28] <- "ID Number"
+names(fight_songs)[28] <- "ID number"
 
 fight_songs
 
