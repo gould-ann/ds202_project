@@ -13,6 +13,8 @@ library(readxl)
 library(classdata)
 library(tidyverse)
 library(stringr)
+library(ggplot2)
+library(plotly)
 ```
 
 ----
@@ -88,7 +90,39 @@ join_data <- left_join(cleaned_ipeds, fight_songs)
 ----
 jessies part
 ```{r}
+join_data2 <- left_join(fight_songs, cleaned_ipeds)
 
+colnames(join_data2)
+
+speed_plot <- join_data2 %>%
+  mutate('conference' = as.factor(join_data2$conference)) %>%
+  ggplot(aes(x = sec_duration, y = bpm, color = join_data2$conference, text = paste0("<b>Song Name: </b>", join_data2$song_name, "<br>", "<b>School: <b>", join_data2$school))) +
+  geom_point() +
+  geom_hline(yintercept = median(join_data2$bpm)) +
+  geom_vline(xintercept = median(join_data2$sec_duration)) +
+  xlab("Song Length (Seconds)") +
+  ylab("Song Speed (bpm)") +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank())
+
+speed_plotly <- ggplotly(speed_plot, tooltip = "text") %>%
+  hide_legend()
+
+speed_plotly
+
+join_data2 <- join_data2 %>%
+  mutate(speed_cat = if_else(join_data2$bpm < 140 && join_data2$sec_duration < 67, 'Short & Slow', 'Long & Fast')) %>%
+  mutate(speed_cat = if_else(join_data2$bpm < 140 && join_data2$sec_duration > 67, 'Long & Slow', 'Long & Fast')) %>%
+  mutate(speed_catt = if_else(join_data2$bpm > 140 && join_data2$sec_duration < 67, 'Short & Fast', 'Long & Fast'))
+
+map <- map_data('state')
+
+map %>%
+  ggplot(aes(x=long, y=lat)) + 
+  geom_path(aes(group=group)) + 
+   geom_point(data = join_data2, 
+             aes(x = join_data2$'Longitude location of institution', y = join_data2$'Latitude location of institution')) +
+  coord_map()
 ```
 
 ----
