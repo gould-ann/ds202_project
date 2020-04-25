@@ -134,8 +134,22 @@ henrys part
 ----
 matthews part
 ```{r}
-
+join_data = join_data %>%
+  rename(Wins = X2019_FB_Wins, Losses = X2019_FB_Losses)
+ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
+  geom_point(aes(size = Wins / 3, shape = student_writer, color = conference)) +
+  xlim(-10, 110) +
+  ylim(-10, 270) +
+  geom_vline(xintercept = 50) +
+  geom_hline(yintercept = 120) +
+  ggtitle("Athletic rank vs Party rank") +
+  xlab("Athletic Rank") +
+  ylab("Party Rank")
 ```
+
+## Party schools fight songs writer varies while party rank < 100 but mostly written by non-students while party rank > 100.
+## The biggest Party and athletic schools are from the Big Ten and SEC. The smallest ones are from ACC and the Pac-12.
+
 
 ----
 anns part (if doing more than cleaning)
