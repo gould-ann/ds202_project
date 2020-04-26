@@ -59,32 +59,31 @@ cleaning data (VERSION 1)
 cleaning the data (VERSION 2!)
 added a new column for the IDs in ipeds. allows for better, through cleaning. Some words weren't used correctly in pmatch.
 ```{r}
+fight_songs
+ipeds
+cleaned_ipeds <- data.frame()
 
-for (id in fight_songs$"ID Number"){
-  if (!is.na(match(name, ipeds$"ID Number"))){
-    picked_row <- (match(name, ipeds$"ID Number"))
-    foo <- paste("works: ", name)
+for (id in fight_songs$"ID.number"){
+  if (!is.na(match(id, ipeds$"ID number"))){
+    picked_row <- (match(id, ipeds$"ID number"))
+    foo <- paste("works: ", id)
+    print(foo)
     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
   }
   else{
     print("ERROR")
   }
 }
-cleaned_ipeds
-fight_songs$ID.number <- as.double(fight_songs$ID.number)
 
 names(fight_songs)[28] <- "ID number"
-
-fight_songs
-
+fight_songs$"ID number" = as.double(fight_songs$"ID number")
 ```
 
 ----
 joining the data
 ```{r}
 cleaned_ipeds$year <- NULL
-
-join_data <- left_join(cleaned_ipeds, fight_songs)
+join_data <- left_join(cleaned_ipeds, fight_songs, by="ID number")
 ```
 
 ----
