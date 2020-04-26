@@ -416,11 +416,27 @@ ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
   geom_hline(yintercept = 120) +
   ggtitle("Athletic rank vs Party rank") +
   xlab("Athletic Rank") +
-  ylab("Party Rank") 
+  ylab("Party Rank")
+
+ggplot(join_data, aes(x = Losses, y = Wins)) +
+  geom_point(aes(color = conference, shape = student_writer, size = join_data$Niche_Party_Rank)) +
+  ggtitle("Wins vs Losses")
+
+ggplot(join_data, aes(x = join_data$`ACT Composite 25th percentile score`, y = join_data$Niche_Party_Rank)) +
+  geom_point(aes(color = conference, shape = student_writer)) +
+  geom_text(label = join_data$school, check_overlap = TRUE) +
+  xlab("ACT Composite 25th percentile score") +
+  ylab("Party Rank") +
+  ggtitle("ACT Composite 25th percentile score vs Party rank")
 ```
 
 ## Party schools fight songs writer varies while party rank < 100 but mostly written by non-students while party rank > 100.
 ## The biggest Party and athletic schools are from the Big Ten and SEC. The smallest ones are from ACC and the Pac-12.
+
+## Schools with a non student fight song have a better football record than schools with a student writer
+## The schools with the best football record also have a low party rank
+
+## Schools between an ACT 25th percentile of 20 and 26 have the highest party rank. Then the party rank increases exponentially as the ACT composite scores exceed 28
 
 
 ----
