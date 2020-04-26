@@ -111,18 +111,290 @@ speed_plotly <- ggplotly(speed_plot, tooltip = "text") %>%
 speed_plotly
 
 join_data2 <- join_data2 %>%
-  mutate(speed_cat = if_else(join_data2$bpm < 140 && join_data2$sec_duration < 67, 'Short & Slow', 'Long & Fast')) %>%
-  mutate(speed_cat = if_else(join_data2$bpm < 140 && join_data2$sec_duration > 67, 'Long & Slow', 'Long & Fast')) %>%
-  mutate(speed_catt = if_else(join_data2$bpm > 140 && join_data2$sec_duration < 67, 'Short & Fast', 'Long & Fast'))
+  mutate(speed_cat = if_else(join_data2$bpm < 140 & join_data2$sec_duration < 67, 'Short & Slow', if_else(join_data2$bpm < 140 & join_data2$sec_duration > 67, 'Long & Slow', if_else(join_data2$bpm > 140 & join_data2$sec_duration < 67, 'Short & Fast', 'Long & Fast')))) 
 
 map <- map_data('state')
 
+join_data2$year <- as.numeric(as.character(join_data2$year))
+
+filter1900 <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1900)
+
 map %>%
-  ggplot(aes(x=long, y=lat)) + 
-  geom_path(aes(group=group)) + 
-   geom_point(data = join_data2, 
-             aes(x = join_data2$'Longitude location of institution', y = join_data2$'Latitude location of institution')) +
-  coord_map()
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filter1900, 
+             aes(x = filter1900$'Longitude location of institution', y = filter1900$'Latitude location of institution', color = filter1900$student_writer)) +
+  geom_label(data = filter1900, aes(filter1900$'Longitude location of institution', filter1900$'Latitude location of institution', label = year, color = filter1900$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter1905 <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1910 & join_data2$year > 1900)
+
+filter1905T <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1910)
+
+filter1905T$student_writer <- factor(filter1905T$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filter1905T, 
+             aes(x = filter1905T$'Longitude location of institution', y = filter1905T$'Latitude location of institution', color = filter1905T$student_writer)) +
+  geom_label(data=filter1905, aes(filter1905$'Longitude location of institution', filter1905$'Latitude location of institution', label = year, color = filter1905$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1915 & join_data2$year > 1910)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1915)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1920 & join_data2$year > 1915)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1920)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1930 & join_data2$year > 1920)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1930)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE)+
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1940 & join_data2$year > 1930)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1940)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE)+
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1950 & join_data2$year > 1940)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1950)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE)+
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1960 & join_data2$year > 1950)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1960)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE)+
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+filter <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1970 & join_data2$year > 1960)
+
+filterT <- join_data2 %>%
+  filter(join_data2$year, join_data2$year < 1970)
+
+filterT$student_writer <- factor(filterT$student_writer, levels = c("Yes", "No", "Unknown"))
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  geom_label(data=filter, aes(filter$'Longitude location of institution', filter$'Latitude location of institution', label = year, color = filter$student_writer), hjust = 0, nudge_x = 0.3, check_overlap = TRUE)+
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+
+map %>%
+  ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group)) + 
+  geom_point(data = filterT, 
+             aes(x = filterT$'Longitude location of institution', y = filterT$'Latitude location of institution', color = filterT$student_writer)) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank()) +
+  coord_map() +
+  theme(legend.position = 'none', axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank()) +
+  ylab("") +
+  xlab("")
+```
+
+```{r}
+join_data2 <- join_data2 %>%
+  mutate(age = if_else(join_data2$year <= 1922, 'old', 'new'))
+
+join_data2$student_writer <- factor(join_data2$student_writer, levels = c("Yes", "No", "Unknown"))
+
+join_data2 %>%
+  group_by(age, student_writer) %>%
+  ggplot(aes(age, fill = student_writer), rm.na = TRUE) +
+  geom_bar()+
+  scale_colour_brewer(palette = "Set1")
+
+join_data2 %>%
+  group_by(speed_cat) %>%
+  ggplot(aes(x = speed_cat, y = year, color = student_writer)) +
+  geom_point()+
+  geom_boxplot() +
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Length & Speed")
+
+join_data2 %>%
+  ggplot(aes(x = Niche_Athletic_Rank, y = X2019_FB_Wins, color = as.factor(number_fights))) +
+  geom_point() +
+   scale_colour_brewer(palette = "Set1")
+
+join_data2 %>%
+  ggplot(aes(x = join_data2$'Tuition and fees, 2013-14', y = Niche_Athletic_Rank, color = speed_cat)) +
+  geom_point()
+  
+join_data2 %>%
+  ggplot(aes(x = Niche_Party_Rank, y = join_data2$'Graduation rate - Bachelor degree within 4 years, total', color = nonsense)) +
+  geom_point()
+
+join_data2 %>%
+  ggplot(aes(x = men, y = join_data2$'Percent of total enrollment that are women')) +
+  geom_boxplot() +
+  xlab("Does the song refer to either men or boys?") +
+  ylab("Percentage of Students who are Female")
+
+join_data2 %>%
+  ggplot(aes(x = spelling, y = join_data2$'SAT Writing 75th percentile score', color = spelling)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Does the song spell out words?") +
+  ylab("SAT 75th Percentile Score")
+  
+
+join_data2 %>%
+  ggplot(aes(x = spelling, y = join_data2$'SAT Writing 25th percentile score', color = spelling)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Does the song spell out words?") +
+  ylab("SAT 25th Percentile Score")
+
+join_data2 %>%
+  group_by(speed_cat) %>%
+  ggplot(aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank, color = speed_cat)) +
+  geom_point()+
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Athletic Ranking") +
+  ylab("Party Ranking")
+
+join_data_longer <- join_data2 %>%
+  pivot_longer(victory:spelling, names_to = 'lyric', values_to='score')
+
+join_data_longer %>%
+  group_by(lyric) %>%
+  ggplot(aes(x = score, y = X2019_FB_Wins)) +
+  geom_boxplot() +
+  facet_wrap(~lyric)
 ```
 
 ----
@@ -144,7 +416,7 @@ ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
   geom_hline(yintercept = 120) +
   ggtitle("Athletic rank vs Party rank") +
   xlab("Athletic Rank") +
-  ylab("Party Rank")
+  ylab("Party Rank") 
 ```
 
 ## Party schools fight songs writer varies while party rank < 100 but mostly written by non-students while party rank > 100.
