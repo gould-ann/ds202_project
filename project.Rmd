@@ -31,28 +31,28 @@ cleaning data (VERSION 1)
 
 2) add if similar name, otherwise print which names did not work
 ```{r}
-cleaned_ipeds <- data.frame()
-i <- 1
-for (name in fight_songs$school){
-  if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
-    picked_row <- (pmatch(name, ipeds$Name))
-    foo <- paste("works: ", name)
-    foo <- paste(foo, ipeds$Name[picked_row])
-    print(foo)
-   
-    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
-  }
-  else{
-    foo <- paste("doesn't work: ", name)
-    # print(foo)
-  }
-}
-
-for(row in 1:nrow(lookup_table)){
-  location <- lookup_table$Column[row]
-  i <- i + 1
-  cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
-}
+# cleaned_ipeds <- data.frame()
+# i <- 1
+# for (name in fight_songs$school){
+#   if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
+#     picked_row <- (pmatch(name, ipeds$Name))
+#     foo <- paste("works: ", name)
+#     foo <- paste(foo, ipeds$Name[picked_row])
+#     print(foo)
+#    
+#     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+#   }
+#   else{
+#     foo <- paste("doesn't work: ", name)
+#     # print(foo)
+#   }
+# }
+# 
+# for(row in 1:nrow(lookup_table)){
+#   location <- lookup_table$Column[row]
+#   i <- i + 1
+#   cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
+# }
 
 ```
 ----
