@@ -25,11 +25,13 @@ ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
 lookup_table = read.csv('lookup_table.csv')
 ```
 ----
+
 cleaning data (VERSION 1)
 
 1) loop through all values ipeds and fight_songs
 
 2) add if similar name, otherwise print which names did not work
+
 ```{r}
 cleaned_ipeds <- data.frame()
 i <- 1
@@ -400,7 +402,20 @@ join_data_longer %>%
 ----
 henrys part
 ```{r}
-
+join_data %>%
+  ggplot(aes(x = sec_duration, y = Niche_Athletic_Rank, color = victory_win_won)) +
+  geom_point(aes(size = X2019_FB_Wins)) +
+  scale_colour_brewer(palette = "Set2") +
+  xlab("Song Length (seconds)") +
+  ylab("Athletic Rank")
+  
+join_data %>%
+  ggplot(aes(x = Niche_Athletic_Rank, y = number_fights, color = conference)) +
+  geom_point(aes(size = X2019_FB_Wins)) +
+  scale_colour_brewer(palette = "Set2") +
+  xlab("Athletic Rank") +
+  ylab("Number of 'Fights'") +
+  ggtitle("Number of 'Fight' Chants vs Athletic Rank")
 ```
 
 ----
