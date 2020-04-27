@@ -33,60 +33,59 @@ cleaning data (VERSION 1)
 2) add if similar name, otherwise print which names did not work
 
 ```{r}
-cleaned_ipeds <- data.frame()
-i <- 1
-for (name in fight_songs$school){
-  if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
-    picked_row <- (pmatch(name, ipeds$Name))
-    foo <- paste("works: ", name)
-    foo <- paste(foo, ipeds$Name[picked_row])
-    print(foo)
-   
-    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
-  }
-  else{
-    foo <- paste("doesn't work: ", name)
-    # print(foo)
-  }
-}
-
-for(row in 1:nrow(lookup_table)){
-  location <- lookup_table$Column[row]
-  i <- i + 1
-  cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
-}
+# cleaned_ipeds <- data.frame()
+# i <- 1
+# for (name in fight_songs$school){
+#   if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
+#     picked_row <- (pmatch(name, ipeds$Name))
+#     foo <- paste("works: ", name)
+#     foo <- paste(foo, ipeds$Name[picked_row])
+#     print(foo)
+#    
+#     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+#   }
+#   else{
+#     foo <- paste("doesn't work: ", name)
+#     # print(foo)
+#   }
+# }
+# 
+# for(row in 1:nrow(lookup_table)){
+#   location <- lookup_table$Column[row]
+#   i <- i + 1
+#   cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
+# }
 
 ```
 ----
 cleaning the data (VERSION 2!)
 added a new column for the IDs in ipeds. allows for better, through cleaning. Some words weren't used correctly in pmatch.
 ```{r}
+fight_songs
+ipeds
+cleaned_ipeds <- data.frame()
 
-for (id in fight_songs$"ID Number"){
-  if (!is.na(match(name, ipeds$"ID Number"))){
-    picked_row <- (match(name, ipeds$"ID Number"))
-    foo <- paste("works: ", name)
+for (id in fight_songs$"ID.number"){
+  if (!is.na(match(id, ipeds$"ID number"))){
+    picked_row <- (match(id, ipeds$"ID number"))
+    foo <- paste("works: ", id)
+    print(foo)
     cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
   }
   else{
     print("ERROR")
   }
 }
-cleaned_ipeds
-fight_songs$ID.number <- as.double(fight_songs$ID.number)
 
 names(fight_songs)[28] <- "ID number"
-
-fight_songs
-
+fight_songs$"ID number" = as.double(fight_songs$"ID number")
 ```
 
 ----
 joining the data
 ```{r}
 cleaned_ipeds$year <- NULL
-
-join_data <- left_join(cleaned_ipeds, fight_songs)
+join_data <- left_join(cleaned_ipeds, fight_songs, by="ID number")
 ```
 
 ----
@@ -107,8 +106,7 @@ speed_plot <- join_data2 %>%
   scale_colour_brewer(palette = "Set1") +
   theme(panel.grid = element_blank())
 
-speed_plotly <- ggplotly(speed_plot, tooltip = "text") %>%
-  hide_legend()
+speed_plotly <- ggplotly(speed_plot, tooltip = "text")
 
 speed_plotly
 
@@ -337,7 +335,7 @@ join_data2 %>%
   group_by(age, student_writer) %>%
   ggplot(aes(age, fill = student_writer), rm.na = TRUE) +
   geom_bar()+
-  scale_colour_brewer(palette = "Set1")
+  scale_fill_manual(values=c("red", "blue", "white"))
 
 join_data2 %>%
   group_by(speed_cat) %>%
@@ -361,33 +359,37 @@ join_data2 %>%
   geom_point()
 
 join_data2 %>%
-  ggplot(aes(x = men, y = join_data2$'Percent of total enrollment that are women')) +
+  ggplot(aes(x = men, y = join_data2$'Percent of total enrollment that are women', fill = men)) +
   geom_boxplot() +
   xlab("Does the song refer to either men or boys?") +
   ylab("Percentage of Students who are Female")
 
 join_data2 %>%
   ggplot(aes(x = spelling, y = join_data2$'SAT Writing 75th percentile score', color = spelling)) +
-  geom_point() +
+  geom_point(size = 3) +
   scale_colour_brewer(palette = "Set1") +
   xlab("Does the song spell out words?") +
-  ylab("SAT 75th Percentile Score")
+  ylab("SAT Writing 75th Percentile Score")
   
 
 join_data2 %>%
   ggplot(aes(x = spelling, y = join_data2$'SAT Writing 25th percentile score', color = spelling)) +
-  geom_point() +
+  geom_point(size = 3) +
   scale_colour_brewer(palette = "Set1") +
   xlab("Does the song spell out words?") +
-  ylab("SAT 25th Percentile Score")
+  ylab("SAT Writing 25th Percentile Score")
 
-join_data2 %>%
+plot2 <- join_data2 %>%
   group_by(speed_cat) %>%
-  ggplot(aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank, color = speed_cat)) +
+  ggplot(aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank, color = speed_cat, text = school)) +
   geom_point()+
   scale_colour_brewer(palette = "Set1") +
   xlab("Athletic Ranking") +
   ylab("Party Ranking")
+
+plotly2 <- ggplotly(plot2, tooltip = "text")
+
+plotly2
 
 join_data_longer <- join_data2 %>%
   pivot_longer(victory:spelling, names_to = 'lyric', values_to='score')
@@ -396,7 +398,17 @@ join_data_longer %>%
   group_by(lyric) %>%
   ggplot(aes(x = score, y = X2019_FB_Wins)) +
   geom_boxplot() +
-  facet_wrap(~lyric)
+  facet_wrap(~lyric) +
+  ylab("2019 Football Wins") +
+  xlab("")
+
+join_data_longer %>%
+  group_by(lyric) %>%
+  ggplot(aes(x = score, fill = score)) +
+  geom_bar() +
+  facet_wrap(~lyric) +
+  xlab("") +
+  scale_fill_manual(values=c("red", "green"))
 ```
 
 ----
@@ -431,7 +443,7 @@ ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
   geom_hline(yintercept = 120) +
   ggtitle("Athletic rank vs Party rank") +
   xlab("Athletic Rank") +
-  ylab("Party Rank")
+  ylab("Party Rank") 
 
 ggplot(join_data, aes(x = Losses, y = Wins)) +
   geom_point(aes(color = conference, shape = student_writer, size = join_data$Niche_Party_Rank)) +

@@ -1,0 +1,82 @@
+---
+title: "project plotly"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(classdata)
+library(tidyverse)
+library(stringr)
+library(ggplot2)
+library(plotly)
+
+fight_songs = read.csv('fight-songs.csv')
+ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
+lookup_table = read.csv('lookup_table.csv')
+
+cleaned_ipeds <- data.frame()
+i <- 1
+for (name in fight_songs$school){
+  if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
+    picked_row <- (pmatch(name, ipeds$Name))
+    foo <- paste("works: ", name)
+    foo <- paste(foo, ipeds$Name[picked_row])
+    print(foo)
+   
+    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+  }
+  else{
+    foo <- paste("doesn't work: ", name)
+    # print(foo)
+  }
+}
+
+for(row in 1:nrow(lookup_table)){
+  location <- lookup_table$Column[row]
+  i <- i + 1
+  cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
+}
+
+for (id in fight_songs$"ID Number"){
+  if (!is.na(match(name, ipeds$"ID Number"))){
+    picked_row <- (match(name, ipeds$"ID Number"))
+    foo <- paste("works: ", name)
+    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+  }
+  else{
+    print("ERROR")
+  }
+}
+cleaned_ipeds
+fight_songs$ID.number <- as.double(fight_songs$ID.number)
+
+names(fight_songs)[28] <- "ID number"
+
+fight_songs
+
+cleaned_ipeds$year <- NULL
+
+join_data <- left_join(cleaned_ipeds, fight_songs)
+
+join_data2 <- left_join(fight_songs, cleaned_ipeds)
+
+join_data2 <- join_data2 %>%
+  mutate(speed_cat = if_else(join_data2$bpm < 140 & join_data2$sec_duration < 67, 'Short & Slow', if_else(join_data2$bpm < 140 & join_data2$sec_duration > 67, 'Long & Slow', if_else(join_data2$bpm > 140 & join_data2$sec_duration < 67, 'Short & Fast', 'Long & Fast'))))
+
+plot2 <- join_data2 %>%
+  group_by(speed_cat) %>%
+  ggplot(aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank, color = speed_cat, text = school)) +
+  geom_point()+
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Athletic Ranking") +
+  ylab("Party Ranking")
+
+plotly2 <- ggplotly(plot2, tooltip = "text")
+```
+
+```{r}
+plotly2
+```
+
