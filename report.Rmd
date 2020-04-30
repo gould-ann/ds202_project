@@ -1,0 +1,30 @@
+---
+title: 'Which Fight Song is the Right Song?'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+authors: todos
+---
+
+# ```{r}
+# library(tinytex)
+# install_tinytex()
+# ```
+
+# Background
+
+## Questions Raised 
+
+# Exploratory Analysis
+
+# Infographics
+
+# Processes
+
+## Data Wragling 
+
+## Visualization
+
+# Conclusion
+
