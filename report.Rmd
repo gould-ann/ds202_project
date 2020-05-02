@@ -1,30 +1,131 @@
 ---
 title: 'Which Fight Song is the Right Song?'
 output:
-  pdf_document: default
   html_document:
     df_print: paged
 authors: todos
 ---
 
-# ```{r}
-# library(tinytex)
-# install_tinytex()
-# ```
+ ```{r, include = FALSE}
+library(readxl)
+library(classdata)
+library(tidyverse)
+library(stringr)
+library(ggplot2)
+library(plotly)
+fight_songs = read.csv('fight-songs.csv')
+ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
+lookup_table = read.csv('lookup_table.csv')
+ ```
+Currently, data scientists have been called to the front lines as they analize data from the COVID-19 pandemic.  It isn't hyperbolic to say that data scientists have saved lives; but in this trying time they also entertain us.  As we all cacoon ourselves in our homes, data scientists refine our Netflix recommendations, identify ISP outages in real time, and keep toilet paper traveling to stores where people need it verses stores with hoarders.  In the spirit of this, as data scientists, we chose to perform the following analysis for entertainments sake.
 
-# Background
+Students across the country have left their college campuses to embrace new online learning communities.  This transition has not been easy and school spirit is probably not at an all time high.  One of the iconic representations of school spirit is the college fight song.  The following analysis is a data exploration of college fight songs from the Power 5 schools (plus Notre Dame).
 
-## Questions Raised 
+## Recruiting the Data
 
-# Exploratory Analysis
+A dataset containing college fight songs was acquired from FiveThirtyEight.com.  Variables such as the school, the author, year it was written, beats per minute, length and lyric cliches from the songs were presented.  The original article by FiveThirtyEight.com allowed readers to select a school and view it on a graph comparing its length and speed with other colleges' songs and listed the cliches in the lyrics.  This was a great jumping off point for our analysis.  To the original dataset we added four more variables and merged it with a dataset containg university demographic data.
 
-# Infographics
+The first variables that were added were the 2019 football wins and losses for the schools in our fight song dataset.  This data was obtained from ncaa.com.  The next variables we obtained were from niche.com.  Niche is a site that provides university information to applying students.  They site also creates rankings and letter grades for schools on a side variety of topics.  We chose to utalize their party school rankings and athletic rankings.  A school ranked number one is the best in that particular category.
 
-# Processes
+Another valuable source of college information is the Integrated Postsecondary Education Data System (IPEDS).  This data is provided by the National Center for Education Statistics.  The IPEDS data can be explored via their website and customized datasets can be downloaded.  The IPEDS dataset we utalized was one created and shared on Kaggle.  The merging of this dataset with the fight song data proved to be a challenge.
 
-## Data Wragling 
+## Playing Through the Noise
 
-## Visualization
+## What Are Our Fight Songs Saying? 
 
-# Conclusion
+Throughout the process of acquiring the data, merging it into one dataset, and finding new sources we kept a list of questions that we wanted to explore.  Some of the most interesting  were:
+
+1.   Is there a relationship between a school’s fight song and their athletic           prowess?
+2.   What can we learn about a school’s culture from its fight song lyrics?
+3.   Does the speed and length of a fight song relate to a school’s culture?
+4.   Do schools that mention men/boys/sons in their fight song lyrics have lower         female enrollment?
+5.   Who wrote college fight songs and when?
+6.   Do English cliches in a fight song correlate to poor student writing               skills?
+7.   How do fight songs change across time?
+
+After our data wrangling we set off to find some answers.
+
+### Song Length & Speed
+
+```{r, include = FALSE}
+cleaned_ipeds <- data.frame()
+i <- 1
+for (name in fight_songs$school){
+  if (!is.na(pmatch(name, ipeds$Name, duplicates.ok = FALSE))){
+    picked_row <- (pmatch(name, ipeds$Name))
+    foo <- paste("works: ", name)
+    foo <- paste(foo, ipeds$Name[picked_row])
+    print(foo)
+   
+    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+  }
+  else{
+    foo <- paste("doesn't work: ", name)
+    # print(foo)
+  }
+}
+
+for(row in 1:nrow(lookup_table)){
+  location <- lookup_table$Column[row]
+  i <- i + 1
+  cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[location,] )
+}
+
+for (id in fight_songs$"ID Number"){
+  if (!is.na(match(name, ipeds$"ID Number"))){
+    picked_row <- (match(name, ipeds$"ID Number"))
+    foo <- paste("works: ", name)
+    cleaned_ipeds <- rbind(cleaned_ipeds, ipeds[picked_row,] )
+  }
+  else{
+    print("ERROR")
+  }
+}
+cleaned_ipeds
+fight_songs$ID.number <- as.double(fight_songs$ID.number)
+
+names(fight_songs)[28] <- "ID number"
+
+fight_songs
+
+cleaned_ipeds$year <- NULL
+
+join_data <- left_join(cleaned_ipeds, fight_songs)
+
+join_data2 <- left_join(fight_songs, cleaned_ipeds)
+
+speed_plot <- join_data2 %>%
+  mutate('conference' = as.factor(join_data2$conference)) %>%
+  ggplot(aes(x = sec_duration, y = bpm, color = join_data2$conference, text = paste0("<b>Song Name: </b>", join_data2$song_name, "<br>", "<b>School: <b>", join_data2$school))) +
+  geom_point() +
+  geom_hline(yintercept = median(join_data2$bpm)) +
+  geom_vline(xintercept = median(join_data2$sec_duration)) +
+  xlab("Song Length (Seconds)") +
+  ylab("Song Speed (bpm)") +
+  scale_colour_brewer(palette = "Set1") +
+  theme(panel.grid = element_blank())
+
+speed_plotly <- ggplotly(speed_plot, tooltip = "text")
+```
+```{r echo = FALSE}
+speed_plotly
+```
+
+The above interactive plot was inspired by FiveThirtyEight's original analysis.  The original plot graphed song length by speed.  To add onto that we made the plot interactive so that the song titles and schools could be viewed.  We also color coded the data points by the athletic division of the school.
+
+From this graph we see that the longest song is the Aggie War Hymn for Texas A&M.  Auburn has one of the shortest songs and it is also on the slow end.  colorado and Oklahoma also have some of the shortest songs, but theirs are a bit faster.  Most songs tend to be short and fast with a cluster of slower songs.
+
+This data was used to create a new categorical variable in our dataset.  We divided both the bpm and length in two even halfs creating four quadrants: short and fast, short and slow, long and fast, and long and slow.
+
+Next we wanted to see where, when, and if a student wrote the song in a visual manner.
+
+## When, Where & Who
+<video width="320" height="240" controls>
+  <source src="map.mp4" type="video/mp4">
+</video>
+
+
+## Process and Team Dynamics
+
+## Coda
 
