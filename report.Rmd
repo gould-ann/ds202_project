@@ -259,7 +259,7 @@ plotly2
 The above interactive map shows the type of song and their athletic and party school rankings.  If you like short and fast songs and prioritize athletics and partying then Alabama is your best bet.  If you want to avoid partys but like athletics and want a longer and slower fight song than Baylor is the school for you.  OVerall, the Power 5 schools perform well athletically and tend to be party schools but the spread is wider among party rankings than athletic rankings.  The above graph might help marching band students when picking a college.
 
 ### Athletic Rank vs Party Rank (sorted by student writer status, conference, and Wins/Losses)
-```{r echo = FALSE}
+```{r echo = FALSE warning = FALSE}
 join_data = join_data %>%
   rename(Wins = X2019_FB_Wins, Losses = X2019_FB_Losses)
 ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
