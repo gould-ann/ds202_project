@@ -17,13 +17,13 @@ fight_songs = read.csv('fight-songs.csv')
 ipeds <- read_excel('IPEDS_data.xlsx', sheet='Data')
 lookup_table = read.csv('lookup_table.csv')
  ```
-Currently, data scientists have been called to the front lines as they analize data from the COVID-19 pandemic.  It isn't hyperbolic to say that data scientists have saved lives; but in this trying time they also entertain us.  As we all cacoon ourselves in our homes, data scientists refine our Netflix recommendations, identify ISP outages in real time, and keep toilet paper traveling to stores where people need it verses stores with hoarders.  In the spirit of this, as data scientists, we chose to perform the following analysis for entertainments sake.
+Currently, data scientists have been called to the front lines as they analyze data from the COVID-19 pandemic.  It is not hyperbolic to say that data scientists have saved lives; but in this trying time, they also entertain us.  As we all cocoon ourselves in our homes, data scientists refine our Netflix recommendations, identify ISP outages in real time, and keep toilet paper traveling to stores where people need it verses stores with hoarders.  In the spirit of this, as data scientists, we chose to perform the following analysis for entertainments sake.
 
-Students across the country have left their college campuses to embrace new online learning communities.  This transition has not been easy and school spirit is probably not at an all time high.  One of the iconic representations of school spirit is the college fight song.  The following analysis is a data exploration of college fight songs from the Power 5 schools (plus Notre Dame).
+Students across the country have left their college campuses to embrace new online learning communities.  This transition has not been easy and school spirit is probably not at an all-time high.  One of the iconic representations of school spirit is the college fight song.  The following analysis is a data exploration of college fight songs from the Power 5 schools (plus Notre Dame).
 
 ## Recruiting the Data
 
-A dataset containing college fight songs was acquired from FiveThirtyEight.com.  Variables such as the school, the author, year it was written, beats per minute, length, and lyric cliches from the songs were presented.  The original article by FiveThirtyEight.com allowed readers to select a school, view it on a graph comparing its length and speed with other colleges' songs, and then see a list of the cliches in the lyrics.  This was a great jumping off point for our analysis.  To the original dataset we added four more variables and merged it with a dataset containg university demographic data.
+A dataset containing college fight songs was acquired from FiveThirtyEight.com.  Variables such as the school, the author, year it was written, beats per minute, length, and lyric clichés from the songs were presented.  The original article by FiveThirtyEight.com allowed readers to select a school, view it on a graph comparing its length and speed with other colleges' songs, and then see a list of the clichés in the lyrics.  This was a great jumping off point for our analysis.  To the original dataset we added four more variables and merged it with a dataset containing university demographic data.
 
 The first variables that were added were the 2019 football wins and losses for the schools in our fight song dataset.  This data was obtained from ncaa.com.  The next variables we obtained were from niche.com.  Niche is a site that provides university information to applying students.  The site also creates rankings and letter grades for schools on a wide variety of topics.  We chose to utilize their party school rankings and athletic rankings.  A school ranked number one is the best in that particular category.
 
@@ -33,17 +33,17 @@ Another valuable source of college information is the Integrated Postsecondary E
 
 ## What Are Our Fight Songs Saying? 
 
-Throughout the process of acquiring the data, merging it into one dataset, and finding new sources we kept a list of questions that we wanted to explore.  Some of the most interesting  were:
+Throughout the process of acquiring the data, merging it into one dataset, and finding new sources we kept a list of questions that we wanted to explore.  Some of the most interesting were:
 
 1.   Is there a relationship between a school’s fight song and their athletic           prowess?
 2.   What can we learn about a school’s culture from its fight song lyrics?
 3.   Does the speed and length of a fight song relate to a school’s culture?
 4.   Do schools that mention men/boys/sons in their fight song lyrics have             lower female enrollment?
 5.   Who wrote college fight songs and when?
-6.   Do English cliches in a fight song correlate to poor student writing               skills?
+6.   Do English clichés in a fight song correlate to poor student writing               skills?
 7.   How do fight songs change across time?
 
-After our data wrangling we set off to find some answers.
+After our data wrangling, we set off to find some answers.
 
 ### Song Length & Speed
 
@@ -113,20 +113,19 @@ speed_plotly
 
 The above interactive plot was inspired by FiveThirtyEight's original analysis.  The original plot graphed song length by speed.  To add onto that we made the plot interactive so that the song titles and schools could be viewed.  We also color coded the data points by the athletic division of the school.
 
-From this graph we see that the longest song is the Aggie War Hymn for Texas A&M.  Auburn has one of the shortest songs and it is also on the slow end.  colorado and Oklahoma also have some of the shortest songs, but theirs are a bit faster.  Most songs tend to be short and fast with a cluster of slower songs.
+From this graph we see that the longest song is the Aggie War Hymn for Texas A&M.  Auburn has one of the shortest songs and it is also on the slow end.  Colorado and Oklahoma also have some of the shortest songs, but theirs are a bit faster.  Most songs tend to be short and fast with a cluster of slower songs.
 
-This data was used to create a new categorical variable in our dataset.  We divided both the bpm and length in two even halfs creating four quadrants: short and fast, short and slow, long and fast, and long and slow.
+This data was used to create a new categorical variable in our dataset.  We divided both the bpm and length in two even halves creating four quadrants: short and fast, short and slow, long and fast, and long and slow.
 
-Next we wanted to see where, when, and if a student wrote the song in a visual manner.
+Next, we wanted to see where, when, and if a student wrote the song in a visual manner.
+
 
 ### When, Where & Who
-
 <video width="640" height="480" controls>
   <source src="map.mp4" type="video/mp4">
 </video>
 
-
-The above map displays the school locations based on the date their fight wong was written.  The red points represent schools where a student wrote the fight song and the blue points are schools where someone other than a student wrote the fight song.  The trend in school fight songs begins with two schools prior to 1900 with students writing the songs.  It then continues throughout the twentieth century.  It does appear that there is a trend over time that moves away from student writers.  Let's check this by comparing student verses non-student author rates from the first half of songs written with the second.
+The above map displays the school locations based on the date their fight song was written.  The red points represent schools where a student wrote the fight song and the blue points are schools where someone other than a student wrote the fight song.  The trend in school fight songs begins with two schools prior to 1900 with students writing the songs.  It then continues throughout the twentieth century.  It does appear that there is a trend over time that moves away from student writers.  Let's check this by comparing student verses non-student author rates from the first half of songs written with the second.
 
 ```{r echo = FALSE, warning = FALSE}
 join_data2$year <- as.numeric(as.character(join_data2$year))
@@ -164,11 +163,11 @@ join_data2 %>%
 
 The songs that are longer and slower are the newest among non-students and songs that are shorter and faster are the newest among student writers.  
 
-Moving on from the who and when of fight song writing the following analysis looks into the song lyrics, and more specifically, the cliches in the lyrics.
+Moving on from the who and when of fight song writing the following analysis looks into the song lyrics, and more specifically, the clichés in the lyrics.
 
-### Fight Song Cliches
+### Fight Song Clichés
 
-Fight songs are full of cliches such as trash talking your opponent, cheering to fight, win, acheive victory!, yelling your school colors, or even talking about how manly you are.  The following collection of bar graphs breaks down each cliche and counts the number of schools that use it in their fight song.
+Fight songs are full of clichés such as trash talking your opponent, cheering to fight, win, achieve victory, yelling your school colors, or even talking about how manly you are.  The following collection of bar graphs breaks down each cliché and counts the number of schools that use it in their fight song.
 
 ```{r echo = FALSE}
 join_data_longer <- join_data2 %>%
@@ -183,9 +182,9 @@ join_data_longer %>%
   scale_fill_manual(values=c("red", "green"))
 ```
 
-##TODO Insert Analysis of above graph here
+Songs that mention their opponents and spell out words are not very common.  Yet songs that mention winning, win, or victory are very common.  It is also common to mention your school colors in your fight song.
 
-Now let's look at whether these cliches are correlated with better football performance from last year.
+Now let us look at whether these clichés are correlated with better football performance from last year.
 
 ```{r echo = FALSE}
 join_data_longer %>%
@@ -197,11 +196,11 @@ join_data_longer %>%
   xlab("")
 ```
 
-##TODO Insert Analysis of above graph here
+References to school colors has a slightly higher median number of 2019 football wins but a lower IQR.  Referencing your opponent on the other hand has a lower median and IQR than those that did not for number of football wins in 2019.  Mentioning win or won is also correlated with higher wins this season than mentioning victory.
 
-While the above shows some correlations between certian lyrics and games won by the football teams in 2019, the small sizes of the samples means there is probably not a statistically significant difference.  Mostly, it is important to remember that song lyrics do not influence football games.  Perhaps though, schools with long and successful athletic histories followed certain lyric trends.
+While the above shows some correlations between certain lyrics and games won by the football teams in 2019, the small sizes of the samples means there is probably not a statistically significant difference.  Mostly, it is important to remember that song lyrics do not influence football games.  Perhaps though, schools with long and successful athletic histories followed certain lyric trends.
 
-Next we will look at two of these cliches in more depth: whether a school mentions men, boys, or sons and whether they spell out words.
+Next, we will look at two of these clichés in more depth: whether a school mentions men, boys, or sons and whether they spell out words.
 
 ### Songs with references to Men vs Student Body Female %
 ```{r echo = FALSE, warning = FALSE}
@@ -214,7 +213,7 @@ join_data2 %>%
 
 Schools with fight songs that do not mention men, boys, or sons have a student population median percentage of 52% female while those that do, have a median of 48% female.  In fact, there is even one school that mentions men that has only about 32% female students.
 
-This is not to say that females are influenced by fight song lyrics when picking schools, but what does this say about schools that mention men in their lyrics?  Were they perhaps all male at one point?  Or are schools that mention men less likely to make other campus culture changes that help with female recuitment and retention?  This is a great example of a surprising find that could represent complex social dynamics as confounding variables.
+This is not to say that females are influenced by fight song lyrics when picking schools, but what does this say about schools that mention men in their lyrics?  Were they perhaps all male at one point?  Or are schools that mention men less likely to make other campus culture changes that help with female recruitment and retention?  This is a great example of a surprising find that could represent complex social dynamics as confounding variables.
 
 ### SAT Writing Scores vs Songs that S - P - E - L - L out words
 #### 25th Percentile
@@ -237,9 +236,9 @@ join_data2 %>%
   ylab("SAT Writing 75th Percentile Score")
 ```
 
-One might want to jump to conclusions about students' spelling outloud in a fight song and their SAT writing scores given the above graphs, but again it is important to remember that correlation does not equal causation and that a small difference does not mean a statistically significant difference.  Even so, might there be some underlying roots for an actual difference here?  Are those schools with fight songs that spell out words ones with higher acceptance rates?  Did trends in school fight song lyric writing diverge from academic minded schools verses athletic minded schools?  
+One might want to jump to conclusions about students' spelling out loud in a fight song and their SAT writing scores given the above graphs, but again it is important to remember that correlation does not equal causation and that a small difference does not mean a statistically significant difference.  Even so, might there be some underlying roots for an actual difference here?  Are those schools with fight songs that spell out words ones with higher acceptance rates?  Did trends in school fight song lyric writing diverge from academic minded schools verses athletic minded schools?  
 
-To further explore campus culture and fight songs next we will look at niche.com athletic and party school rankings with our fight songs.
+To further explore campus culture and fight songs, next we will look at niche.com athletic and party school rankings with our fight songs.
 
 ### Song Type & Party vs Athletic Ranking 
 ```{r echo = FALSE}
@@ -256,7 +255,7 @@ plotly2 <- ggplotly(plot2, tooltip = "text")
 plotly2
 ```
 
-The above interactive map shows the type of song and their athletic and party school rankings.  If you like short and fast songs and prioritize athletics and partying then Alabama is your best bet.  If you want to avoid partys but like athletics and want a longer and slower fight song than Baylor is the school for you.  OVerall, the Power 5 schools perform well athletically and tend to be party schools but the spread is wider among party rankings than athletic rankings.  The above graph might help marching band students when picking a college.
+The above interactive map shows the type of song and their athletic and party school rankings.  If you like short and fast songs and prioritize athletics and partying, then Alabama is your best bet.  If you want to avoid parties but like athletics and want a longer and slower fight song than Baylor is the school for you.  Overall, the Power 5 schools perform well athletically and tend to be party schools, but the spread is wider among party rankings than athletic rankings.  The above graph might help marching band students when picking a college.
 
 ### Athletic Rank vs Party Rank (sorted by student writer status, conference, and Wins/Losses)
 ```{r echo = FALSE, warning = FALSE}
@@ -273,9 +272,7 @@ ggplot(join_data, aes(x = Niche_Athletic_Rank, y = Niche_Party_Rank)) +
   ylab("Party Rank")
 ```
 
-##TODO Insert interpretation here
-
-## Process and Team Dynamics
+The above graph is beneficial in a few ways.  It shows us that having a high (meaning closer to one) athletic rank but low party rank is not very common.  We can also see that schools with higher party rankings tend to come from the SEC or Big 10.  Maybe most notable, schools with low party ranks do not have song written by students.
 
 ## Coda
 
@@ -286,9 +283,25 @@ To wrap this up we believe there are some solid conclusions we are able to come 
 3.   Fight songs were written from 1893 to 1967 and started off being written          by students but it shifted away from student authors over time.
 4.   Schools that talk about men, boys, or sons in their fight song have lower         female enrollment percentages.
 5.   Low party school rankings are correlated with non-student written fight           songs.
-6.   If you like to party, like sports you should go to Alabama if they like            short and fast fight songs.
+6.   If you like to party, like sports, and like short fast songs you should go         to Alabama, unless there are other things you find important.
 7.   Correlation does not imply causation.
 8.   Complex cultural issues are hard to measure but quantitative analysis can         provide hints to trends and shifts.
+
+## Process and Team Dynamics
+
+The above analysis was conducted for Data Science 202 at Iowa State University as a Spring final project by Jessie Bustin, Ann Gould, Matthew Coulibaly, and Henry Underhill.  The team worked through github, conducted the analysis in R studio, and presented the findings in this report as well as a PowerPoint presentation.  
+
+Ann Gould coordinated communication with the professor and TA.  She also completed the data cleaning and merged datasets.
+
+Jessie Bustin found the dataset and led the team analysis and composition of this report.  Her analysis focused on creating interactive graphs and the map.
+
+Matthew Coulibaly produced graphs and analysis of the niche.com rankings and their relationships with the song data.
+
+Henry Underhill provided analysis of the song lyrics and their relationships to 2019 football wins and other college demographics.
+
+While the above breakdown shows primary focuses there was a regular flow of workload between team members within the primary areas of focus.  The team worked in unison to produce questions for leading the analysis and in search of data to add to the original fight song dataset.  The team also worked through google slides in unison to create a presentation before importing into PP where finishing touches were added.
+
+To facilitate this process the team kept in communication through a group text and also met via WebEx to make decisions and divide workloads.
 
 
 
