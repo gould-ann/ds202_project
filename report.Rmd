@@ -31,6 +31,20 @@ Another valuable source of college information is the Integrated Postsecondary E
 
 ## Playing Through the Noise
 
+### Cleaning the Data
+
+When it came to cleaning the data, we mainly focused on the `fight_songs` and `ipeds` data sets. Both data sets were relatively clean. `readxl` was really helpful with ipeds since there were multiple sheets within the data for use.
+
+When it comes to the data the university data within `fight_songs`$\subseteq$ `ipeds`. The first approach we took was alphabetically sorting both datasets and then looping through the `ipeds` dataset `fight_songs` amount of times. We would extract universities with similar names to the `fight_songs` dataset from the `ipeds` dataset. This was done with `pmatch()`. A `match()` call didn't work well since some of the university names in `fight_songs` were abbreviated by just their name.
+
+Unfortunately this did not work since some of the university names in `fight_songs` were so generic that there would be multiple matches from `ipeds`, additionally, sorting the data alphabetically didn't work with university names the included the word "The" in their university title. This led to incorrect extracting, and we had to come up with a different solution to cleaning the data.
+
+### Merging the Data 
+
+When it came to bringing the data together we originally used `pmatch()` to lookup universities. Universities that couldn't find a match with `pmatch()` had a separate CSV lookup table that contained university IDs from `ipeds` and university names from `fight_songs`.
+
+We eventually dropped the `pmatch()` looping approach + lookup table and instead just appended a new column containing all university IDs to the `fight_songs` CSV. This worked well for us because the university IDs used in the `ipeds` dataset is consistent with other national institutionalized data.
+
 ## What Are Our Fight Songs Saying? 
 
 Throughout the process of acquiring the data, merging it into one dataset, and finding new sources we kept a list of questions that we wanted to explore.  Some of the most interesting were:
