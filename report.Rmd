@@ -317,6 +317,8 @@ While the above breakdown shows primary focuses there was a regular flow of work
 
 To facilitate this process the team kept in communication through a group text and also met via WebEx to make decisions and divide workloads.
 
+## Sources
 
+[https://www.kaggle.com/sumithbhongale/american-university-data-ipeds-dataset/home](https://www.kaggle.com/sumithbhongale/american-university-data-ipeds-dataset/home)
 
 
